@@ -8,6 +8,7 @@
 body {
     background: #0b1220;
     color: #fff;
+    line-height: 1.6;
 }
 
 /* Header */
@@ -17,18 +18,30 @@ body {
     align-items: center;
     padding: 15px 40px;
     background: #0f1a2b;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    flex-wrap: nowrap; /* Boshida no-wrap */
 }
 
 .logo {
     font-size: 24px;
     font-weight: bold;
     color: #4da3ff;
+    white-space: nowrap; /* Logoni bir qatorda ushlab turadi */
+}
+
+.nav {
+    display: flex;
+    gap: 15px;
+    flex-wrap: nowrap; /* No-wrap boshida */
 }
 
 .nav a {
-    margin: 0 15px;
     text-decoration: none;
     color: #ccc;
+    font-weight: 500;
+    white-space: nowrap;
 }
 
 .nav a:hover {
@@ -42,6 +55,8 @@ body {
     border-radius: 6px;
     cursor: pointer;
     color: #fff;
+    font-weight: 600;
+    white-space: nowrap;
 }
 
 /* Hero */
@@ -59,7 +74,7 @@ body {
 /* Cards */
 .cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 20px;
     padding: 40px;
 }
@@ -76,8 +91,18 @@ body {
 }
 
 .card h2 {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     color: #4da3ff;
+}
+
+.card ul {
+    list-style: none;
+    margin-top: 10px;
+}
+
+.card ul li {
+    padding: 8px 0;
+    border-bottom: 1px solid #333;
 }
 
 /* Footer */
@@ -86,4 +111,142 @@ body {
     padding: 20px;
     background: #0f1a2b;
     color: #aaa;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(11, 18, 32, 0.9);
+}
+
+.modal-content {
+    background-color: #111c33;
+    margin: 10% auto;
+    padding: 30px;
+    border-radius: 10px;
+    width: 320px;
+    max-width: 90%;
+    color: #ccc;
+    position: relative;
+}
+
+.close {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #fff;
+}
+
+.modal-content form label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+
+.modal-content form input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    border: none;
+    font-size: 14px;
+}
+
+.modal-content form .btn {
+    margin-top: 20px;
+    width: 100%;
+}
+
+/* Responsive uchun media queries */
+@media screen and (max-width: 992px) {
+    .cards {
+        padding: 20px;
+    }
+    .hero {
+        padding: 60px 20px;
+    }
+    .hero h1 {
+        font-size: 32px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .header {
+        flex-wrap: wrap;
+        padding: 15px 20px;
+    }
+
+    .logo {
+        flex: 1 1 100%;
+        text-align: center;
+        margin-bottom: 10px;
+        font-size: 28px;
+    }
+
+    .nav {
+        flex: 1 1 100%;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 10px;
+        flex-wrap: wrap;
+    }
+
+    .nav a {
+        margin: 5px 10px;
+        white-space: normal;
+        font-size: 14px;
+    }
+
+    .btn {
+        flex: 1 1 100%;
+        padding: 10px;
+        font-size: 16px;
+        max-width: 200px;
+        margin: 0 auto 10px auto;
+        display: block;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+        padding: 15px;
+    }
+
+    .hero h1 {
+        font-size: 24px;
+        padding: 0 10px;
+    }
+
+    .modal-content {
+        width: 90%;
+        margin: 15% auto;
+        padding: 20px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .nav a {
+        font-size: 12px;
+        margin: 5px 6px;
+    }
+
+    .hero h1 {
+        font-size: 20px;
+    }
+
+    .btn {
+        max-width: 100%;
+    }
 }
