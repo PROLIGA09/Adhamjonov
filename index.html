@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Cyubersport</title>
 
     <!-- Font Awesome -->
@@ -16,6 +16,7 @@
 <header>
     <div class="container header-container">
         <div class="logo">Pro<span>Liga</span></div>
+
         <nav>
             <ul>
                 <li><a href="#home" class="active">Home</a></li>
@@ -26,30 +27,21 @@
                 <li><a href="#contact">Contact</a></li>
             </ul>
         </nav>
+
         <button class="cta-button">Join Now</button>
     </div>
 </header>
 
-<!-- Section Indicator -->
-<div class="section-indicator">
-    <div class="indicator-dot active" data-section="home"></div>
-    <div class="indicator-dot" data-section="features"></div>
-    <div class="indicator-dot" data-section="gamers"></div>
-    <div class="indicator-dot" data-section="superfans"></div>
-    <div class="indicator-dot" data-section="news"></div>
-    <div class="indicator-dot" data-section="contact"></div>
-</div>
-
 <!-- HERO -->
 <section id="home" class="page-section hero">
     <div class="container hero-content">
-        <div class="hero-subtitle">Cyuber</div>
+        <p class="hero-subtitle">Cyuber</p>
         <h1 class="hero-title">Hello!</h1>
-        <div class="tournament-name">Cyubersport</div>
+        <h2 class="tournament-name">Cyubersport</h2>
 
         <div class="countdown">
-            <div class="countdown-text">Starting In:</div>
-            <div class="countdown-time" id="timer">10:00</div>
+            <span class="countdown-text">Starting In:</span>
+            <span class="countdown-time" id="timer">10:00</span>
         </div>
 
         <button class="cta-button">Register Now</button>
@@ -57,23 +49,26 @@
 </section>
 
 <!-- FEATURES -->
-<section id="features" class="page-section features">
+<section id="features" class="page-section">
     <div class="container">
         <h2 class="section-title">Why Join TrueGamers?</h2>
+
         <div class="features-grid">
             <div class="feature-card">
                 <i class="fas fa-trophy feature-icon"></i>
-                <h3 class="feature-title">Elite Tournaments</h3>
+                <h3>Elite Tournaments</h3>
                 <p>High prize pools and global recognition.</p>
             </div>
+
             <div class="feature-card">
                 <i class="fas fa-users feature-icon"></i>
-                <h3 class="feature-title">Community</h3>
+                <h3>Community</h3>
                 <p>Millions of gamers worldwide.</p>
             </div>
+
             <div class="feature-card">
                 <i class="fas fa-gamepad feature-icon"></i>
-                <h3 class="feature-title">Premium Content</h3>
+                <h3>Premium Content</h3>
                 <p>Guides from professional players.</p>
             </div>
         </div>
@@ -84,6 +79,7 @@
 <section id="gamers" class="page-section gamers">
     <div class="container">
         <h2 class="section-title">Meet Our Gamers</h2>
+
         <div class="gamers-grid">
             <div class="gamer-card">
                 <img src="https://images.unsplash.com/photo-1593305841991-05c297ba4575" class="gamer-img">
@@ -96,7 +92,6 @@
     </div>
 </section>
 
-<!-- JS -->
 <script src="script.js"></script>
 </body>
 </html>

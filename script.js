@@ -1,45 +1,9 @@
-// Countdown Timer
-let time = 600; // 10 minutes
-
-const timerEl = document.getElementById("timer");
+let time = 600;
+const timer = document.getElementById("timer");
 
 setInterval(() => {
-    let minutes = Math.floor(time / 60);
-    let seconds = time % 60;
-
-    timerEl.textContent =
-        `${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
-
+    let m = Math.floor(time / 60);
+    let s = time % 60;
+    timer.textContent = `${m}:${s < 10 ? "0" + s : s}`;
     if (time > 0) time--;
 }, 1000);
-
-
-// Active section indicator
-const sections = document.querySelectorAll(".page-section");
-const dots = document.querySelectorAll(".indicator-dot");
-const navLinks = document.querySelectorAll("nav a");
-
-window.addEventListener("scroll", () => {
-    let current = "";
-
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop - 150;
-        if (scrollY >= sectionTop) {
-            current = section.getAttribute("id");
-        }
-    });
-
-    dots.forEach(dot => {
-        dot.classList.toggle(
-            "active",
-            dot.dataset.section === current
-        );
-    });
-
-    navLinks.forEach(link => {
-        link.classList.toggle(
-            "active",
-            link.getAttribute("href") === "#" + current
-        );
-    });
-});
