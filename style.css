@@ -1,238 +1,26 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-}
-
+/* Umumiy stil */
 body {
-    background: #0b1220;
-    color: #fff;
-    line-height: 1.6;
-}
-
-/* Header */
-.header {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to right, #74ebd5, #ACB6E5);
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 40px;
-    background: #0f1a2b;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    flex-wrap: wrap;
-}
-
-.logo {
-    font-size: 28px;
-    font-weight: bold;
-    color: #4da3ff;
-    flex: 1 1 auto;
-}
-
-.nav {
-    display: flex;
-    gap: 15px;
-    flex: 2 1 auto;
-    flex-wrap: wrap;
     justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
-.nav a {
-    text-decoration: none;
-    color: #ccc;
-    font-weight: 500;
-}
-
-.nav a:hover {
-    color: #4da3ff;
-}
-
-.btn {
-    background: #4da3ff;
-    border: none;
-    padding: 8px 18px;
-    border-radius: 6px;
-    cursor: pointer;
-    color: #fff;
-    font-weight: 600;
-    flex-shrink: 0;
-}
-
-/* Hero */
-.hero {
-    text-align: center;
-    padding: 80px 20px;
-    background: linear-gradient(120deg, #111c33, #0b1220);
-}
-
-.hero h1 {
-    font-size: 40px;
-    margin-bottom: 15px;
-}
-
-/* Cards */
-.cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-    padding: 40px;
-}
-
-.card {
-    background: #111c33;
-    padding: 25px;
-    border-radius: 12px;
-    transition: transform 0.3s;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-}
-
-.card h2 {
-    margin-bottom: 15px;
-    color: #4da3ff;
-}
-
-.card ul {
-    list-style: none;
-    margin-top: 10px;
-}
-
-.card ul li {
-    padding: 8px 0;
-    border-bottom: 1px solid #333;
-}
-
-/* Footer */
-.footer {
-    text-align: center;
+/* Video ramka */
+.video-frame {
+    background-color: rgba(255,255,255,0.9);
     padding: 20px;
-    background: #0f1a2b;
-    color: #aaa;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    max-width: 800px;
+    width: 90%;
 }
 
-/* Modal */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 2000;
-    left: 0;
-    top: 0;
+.video-frame video {
     width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(11, 18, 32, 0.95);
-}
-
-.modal-content {
-    background-color: #111c33;
-    margin: 10% auto;
-    padding: 30px;
-    border-radius: 10px;
-    width: 320px;
-    max-width: 90%;
-    color: #ccc;
-    position: relative;
-}
-
-.close {
-    color: #aaa;
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.close:hover {
-    color: #fff;
-}
-
-.modal-content form label {
+    border-radius: 15px;
     display: block;
-    margin-top: 15px;
-    margin-bottom: 5px;
-}
-
-.modal-content form input {
-    width: 100%;
-    padding: 8px;
-    border-radius: 6px;
-    border: none;
-    font-size: 14px;
-}
-
-.modal-content form .btn {
-    margin-top: 20px;
-    width: 100%;
-}
-
-/* Responsive uchun media queries */
-
-/* Tabletlar */
-@media screen and (max-width: 992px) {
-    .hero {
-        padding: 60px 20px;
-    }
-    .hero h1 {
-        font-size: 32px;
-    }
-    .cards {
-        padding: 30px 20px;
-    }
-}
-
-/* Mobil telefonlar */
-@media screen and (max-width: 768px) {
-    .header {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .nav {
-        justify-content: center;
-        gap: 10px;
-        margin: 10px 0;
-    }
-
-    .btn {
-        width: 80%;
-        margin-bottom: 10px;
-    }
-
-    .hero h1 {
-        font-size: 24px;
-    }
-
-    .cards {
-        grid-template-columns: 1fr;
-        padding: 20px;
-    }
-
-    .modal-content {
-        width: 90%;
-        margin: 15% auto;
-        padding: 20px;
-    }
-}
-
-/* Kichik telefonlar (480px dan kichik) */
-@media screen and (max-width: 480px) {
-    .hero h1 {
-        font-size: 20px;
-    }
-
-    .nav a {
-        font-size: 12px;
-        padding: 4px 6px;
-    }
-
-    .btn {
-        padding: 10px;
-        font-size: 14px;
-    }
 }
