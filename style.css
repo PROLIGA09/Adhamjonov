@@ -21,27 +21,28 @@ body {
     position: sticky;
     top: 0;
     z-index: 1000;
-    flex-wrap: nowrap; /* Boshida no-wrap */
+    flex-wrap: wrap;
 }
 
 .logo {
-    font-size: 24px;
+    font-size: 28px;
     font-weight: bold;
     color: #4da3ff;
-    white-space: nowrap; /* Logoni bir qatorda ushlab turadi */
+    flex: 1 1 auto;
 }
 
 .nav {
     display: flex;
     gap: 15px;
-    flex-wrap: nowrap; /* No-wrap boshida */
+    flex: 2 1 auto;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .nav a {
     text-decoration: none;
     color: #ccc;
     font-weight: 500;
-    white-space: nowrap;
 }
 
 .nav a:hover {
@@ -56,7 +57,7 @@ body {
     cursor: pointer;
     color: #fff;
     font-weight: 600;
-    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 /* Hero */
@@ -123,7 +124,7 @@ body {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(11, 18, 32, 0.9);
+    background-color: rgba(11, 18, 32, 0.95);
 }
 
 .modal-content {
@@ -171,62 +172,45 @@ body {
 }
 
 /* Responsive uchun media queries */
+
+/* Tabletlar */
 @media screen and (max-width: 992px) {
-    .cards {
-        padding: 20px;
-    }
     .hero {
         padding: 60px 20px;
     }
     .hero h1 {
         font-size: 32px;
     }
+    .cards {
+        padding: 30px 20px;
+    }
 }
 
+/* Mobil telefonlar */
 @media screen and (max-width: 768px) {
     .header {
-        flex-wrap: wrap;
-        padding: 15px 20px;
-    }
-
-    .logo {
-        flex: 1 1 100%;
-        text-align: center;
-        margin-bottom: 10px;
-        font-size: 28px;
+        flex-direction: column;
+        align-items: center;
     }
 
     .nav {
-        flex: 1 1 100%;
         justify-content: center;
         gap: 10px;
-        margin-bottom: 10px;
-        flex-wrap: wrap;
-    }
-
-    .nav a {
-        margin: 5px 10px;
-        white-space: normal;
-        font-size: 14px;
+        margin: 10px 0;
     }
 
     .btn {
-        flex: 1 1 100%;
-        padding: 10px;
-        font-size: 16px;
-        max-width: 200px;
-        margin: 0 auto 10px auto;
-        display: block;
-    }
-
-    .cards {
-        grid-template-columns: 1fr;
-        padding: 15px;
+        width: 80%;
+        margin-bottom: 10px;
     }
 
     .hero h1 {
         font-size: 24px;
-        padding: 0 10px;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+        padding: 20px;
     }
 
     .modal-content {
@@ -236,17 +220,19 @@ body {
     }
 }
 
+/* Kichik telefonlar (480px dan kichik) */
 @media screen and (max-width: 480px) {
-    .nav a {
-        font-size: 12px;
-        margin: 5px 6px;
-    }
-
     .hero h1 {
         font-size: 20px;
     }
 
+    .nav a {
+        font-size: 12px;
+        padding: 4px 6px;
+    }
+
     .btn {
-        max-width: 100%;
+        padding: 10px;
+        font-size: 14px;
     }
 }

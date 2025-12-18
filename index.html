@@ -2,6 +2,7 @@
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proliga</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -10,42 +11,82 @@
 <header class="header">
     <div class="logo">Proliga</div>
     <nav class="nav">
-        <a href="#">Bosh sahifa</a>
-        <a href="#">Cybersport</a>
-        <a href="#">IT</a>
-        <a href="#">Yangiliklar</a>
-        <a href="#">Faollar</a>
+        <a href="#home">Bosh sahifa</a>
+        <a href="#cybersport">Cybersport</a>
+        <a href="#it">IT</a>
+        <a href="#news">Yangiliklar</a>
+        <a href="#active">Faollar</a>
     </nav>
-    <button class="btn">Kirish</button>
+    <button class="btn" id="loginBtn">Kirish</button>
 </header>
 
-<section class="hero">
+<section class="hero" id="home">
     <h1>Proliga platformasiga xush kelibsiz</h1>
     <p>Cybersport, IT va zamonaviy yangiliklar markazi</p>
 </section>
 
-<section class="cards">
+<section class="cards" id="cybersport">
     <div class="card">
-        <h2>🎮 Cybersport</h2>
-        <p>Turnirlar, jamoalar va o‘yin yangiliklari</p>
+        <h2>🎮 Cybersport Turnirlari</h2>
+        <div id="tournament-list"></div>
     </div>
+</section>
+
+<section class="cards" id="it">
     <div class="card">
         <h2>💻 IT</h2>
         <p>Dasturlash, texnologiya va startaplar</p>
     </div>
+</section>
+
+<section class="cards" id="news">
     <div class="card">
         <h2>📰 Yangiliklar</h2>
-        <p>Eng so‘nggi va muhim xabarlar</p>
+        <ul id="news-list"></ul>
     </div>
+</section>
+
+<section class="cards" id="active">
     <div class="card">
         <h2>🔥 Faollar</h2>
-        <p>Eng faol foydalanuvchilar va jamoa</p>
+        <ul id="active-users"></ul>
     </div>
 </section>
 
 <footer class="footer">
     <p>© 2025 Proliga. Barcha huquqlar himoyalangan.</p>
 </footer>
+
+<!-- Kirish Modal -->
+<div id="loginModal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+        <h2>Kirish</h2>
+        <form id="loginForm">
+            <label for="username">Foydalanuvchi nomi:</label>
+            <input type="text" id="username" required>
+            <label for="password">Parol:</label>
+            <input type="password" id="password" required>
+            <button type="submit" class="btn">Kirish</button>
+        </form>
+        <p>Yangi foydalanuvchi? <a href="#" id="showRegister">Ro'yxatdan o'tish</a></p>
+    </div>
+</div>
+
+<!-- Ro'yxatdan o'tish Modal -->
+<div id="registerModal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="closeRegister">&times;</span>
+        <h2>Ro'yxatdan o'tish</h2>
+        <form id="registerForm">
+            <label for="regUsername">Foydalanuvchi nomi:</label>
+            <input type="text" id="regUsername" required>
+            <label for="regPassword">Parol:</label>
+            <input type="password" id="regPassword" required>
+            <button type="submit" class="btn">Ro'yxatdan o'tish</button>
+        </form>
+    </div>
+</div>
 
 <script src="js/main.js"></script>
 </body>
