@@ -1,0 +1,164 @@
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: #0a0e17;
+    color: #ffffff;
+    line-height: 1.6;
+}
+
+/* CONTAINER */
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 20px;
+}
+
+/* HEADER */
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(10, 14, 23, 0.95);
+    border-bottom: 1px solid #1a2332;
+    z-index: 1000;
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0;
+}
+
+/* LOGO */
+.logo {
+    font-size: 28px;
+    font-weight: 800;
+    color: #00a8ff;
+}
+
+.logo span {
+    color: #ff6b6b;
+}
+
+/* NAV */
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 25px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #e0e0e0;
+    font-weight: 600;
+}
+
+nav a:hover,
+nav a.active {
+    color: #00a8ff;
+}
+
+/* BUTTON */
+.cta-button {
+    background: linear-gradient(90deg, #ff6b6b, #ff8e53);
+    border: none;
+    color: white;
+    padding: 10px 25px;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+/* SECTIONS */
+.page-section {
+    min-height: 100vh;
+    padding: 140px 0 80px;
+    display: flex;
+    align-items: center;
+}
+
+/* HERO */
+.hero {
+    background: radial-gradient(circle at 20% 50%, #1a2332, #0a0e17);
+    text-align: center;
+}
+
+.hero-subtitle {
+    color: #00a8ff;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.hero-title {
+    font-size: 52px;
+    font-weight: 900;
+    background: linear-gradient(90deg, #00a8ff, #ff6b6b);
+    -webkit-background-clip: text;
+    color: transparent;
+    margin: 15px 0;
+}
+
+.tournament-name {
+    font-size: 34px;
+    color: #ffd166;
+    font-weight: 800;
+}
+
+/* COUNTDOWN */
+.countdown {
+    margin: 25px auto;
+    background: rgba(26, 35, 50, 0.7);
+    padding: 20px 30px;
+    display: inline-flex;
+    gap: 15px;
+    border-radius: 6px;
+    border: 1px solid #2a3a5a;
+}
+
+.countdown-text {
+    color: #ffd166;
+    font-weight: 700;
+}
+
+.countdown-time {
+    color: #00a8ff;
+    font-size: 32px;
+    font-weight: 900;
+}
+
+/* SECTION TITLE */
+.section-title {
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 50px;
+    font-weight: 800;
+}
+
+/* FEATURES */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.feature-card {
+    background: #1a2332;
+    padding: 30px;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid #2a3a5a;
+}
+
+.feature-icon {
+    font-size: 40px;
