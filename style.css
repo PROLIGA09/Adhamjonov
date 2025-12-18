@@ -2,149 +2,88 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
-
-html, body {
-    width: 100%;
-    overflow-x: hidden;
-    font-family: 'Segoe UI', Tahoma, sans-serif;
+    font-family: Arial, sans-serif;
 }
 
 body {
-    background: #0a0e17;
+    background: #0b1220;
     color: #fff;
 }
 
-/* CONTAINER */
-.container {
-    width: 100%;
-    max-width: 1200px;
-    margin: auto;
-    padding: 0 20px;
-}
-
-/* HEADER */
-header {
-    position: fixed;
-    width: 100%;
-    top: 0;
-    background: rgba(10,14,23,.95);
-    z-index: 1000;
-}
-
-.header-container {
+/* Header */
+.header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 0;
+    padding: 15px 40px;
+    background: #0f1a2b;
 }
 
-/* LOGO */
 .logo {
-    font-size: 26px;
-    font-weight: 800;
-    color: #00a8ff;
+    font-size: 24px;
+    font-weight: bold;
+    color: #4da3ff;
 }
 
-.logo span {
-    color: #ff6b6b;
-}
-
-/* NAV */
-nav ul {
-    display: flex;
-    gap: 25px;
-    list-style: none;
-}
-
-nav a {
+.nav a {
+    margin: 0 15px;
     text-decoration: none;
-    color: #ddd;
-    font-weight: 600;
+    color: #ccc;
 }
 
-/* BUTTON */
-.cta-button {
-    background: linear-gradient(90deg, #ff6b6b, #ff8e53);
+.nav a:hover {
+    color: #4da3ff;
+}
+
+.btn {
+    background: #4da3ff;
     border: none;
-    padding: 10px 22px;
-    color: #fff;
-    font-weight: 700;
-    border-radius: 4px;
+    padding: 8px 18px;
+    border-radius: 6px;
     cursor: pointer;
+    color: #fff;
 }
 
-/* SECTION */
-.page-section {
-    min-height: 100vh;
-    padding: 140px 0 80px;
-    display: flex;
-    align-items: center;
-}
-
-/* HERO */
+/* Hero */
 .hero {
     text-align: center;
-    background: radial-gradient(circle at 20% 50%, #1a2332, #0a0e17);
+    padding: 80px 20px;
+    background: linear-gradient(120deg, #111c33, #0b1220);
 }
 
-.hero-title {
-    font-size: clamp(32px, 6vw, 56px);
-    font-weight: 900;
-    background: linear-gradient(90deg, #00a8ff, #ff6b6b);
-    -webkit-background-clip: text;
-    color: transparent;
+.hero h1 {
+    font-size: 40px;
+    margin-bottom: 15px;
 }
 
-.tournament-name {
-    font-size: clamp(22px, 4vw, 34px);
-    color: #ffd166;
-    margin-bottom: 20px;
-}
-
-/* COUNTDOWN */
-.countdown {
-    display: inline-flex;
-    gap: 10px;
-    background: rgba(26,35,50,.7);
-    padding: 15px 25px;
-    border-radius: 6px;
-}
-
-/* FEATURES */
-.features-grid {
+/* Cards */
+.cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 40px;
 }
 
-.feature-card {
-    background: #1a2332;
-    padding: 30px;
-    border-radius: 8px;
+.card {
+    background: #111c33;
+    padding: 25px;
+    border-radius: 12px;
+    transition: transform 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card h2 {
+    margin-bottom: 10px;
+    color: #4da3ff;
+}
+
+/* Footer */
+.footer {
     text-align: center;
-}
-
-/* GAMERS */
-.gamers {
-    background: #141a26;
-}
-
-.gamers-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 25px;
-}
-
-/* RESPONSIVE */
-@media (max-width: 768px) {
-    nav ul {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    .header-container {
-        flex-direction: column;
-        gap: 10px;
-    }
+    padding: 20px;
+    background: #0f1a2b;
+    color: #aaa;
 }
