@@ -1,29 +1,26 @@
+/* Butun sahifa uchun fon rasm */
 body {
-  margin: 0;
-  height: 100vh;
-  background: linear-gradient(135deg, #4f46e5, #9333ea);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: Arial, sans-serif;
+    margin: 0; /* Sahifa chetini yo'q qilish */
+    padding: 0;
+    background-image: url('salom.jpg.png'); /* Rasm papkasi */
+    background-size: cover;       /* Sahifani to'liq qoplash */
+    background-repeat: no-repeat; /* Takrorlanmasin */
+    background-position: center;  /* Markazga joylashsin */
+    font-family: Arial, sans-serif;
+    color: white; /* Matn fon rasm ustida ko‘rinadigan bo‘lsin */
+    height: 100vh; /* Ekran balandligini to'liq qamrab olish */
 }
 
-.box {
-  background: white;
-  padding: 40px 60px;
-  border-radius: 16px;
-  text-align: center;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+/* Matn uchun markazlashtirish */
+.center-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.3); /* Fon ustiga biroz qorong‘ulik */
 }
 
 h1 {
-  margin: 0;
-  font-size: 48px;
-  color: #4f46e5;
-}
-
-p {
-  margin-top: 10px;
-  font-size: 18px;
-  color: #555;
+    font-size: 3em;
 }
