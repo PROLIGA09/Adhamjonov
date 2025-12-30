@@ -3,13 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fon Rasmli Web Sahifa</title>
-    <!-- CSS faylni ulash -->
+    <title>Rasm Galereyasi - Asosiy Sahifa</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 </head>
 <body>
-    <div class="center-text">
-        <h1>Cyuber AI</h1>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-images"></i> Rasm Galereyasi</h1>
+            <p class="subtitle">Barcha foydalanuvchilar uchun rasmlar galereyasi</p>
+        </header>
+
+        <main>
+            <section class="add-image-section">
+                <h2><i class="fas fa-plus-circle"></i> Rasm Qo'shish</h2>
+                <div class="form-container">
+                    <div class="input-group">
+                        <label for="imageUrl"><i class="fas fa-link"></i> Rasm URL manzili:</label>
+                        <input type="url" id="imageUrl" placeholder="https://example.com/rasm.jpg" required>
+                        <div class="example">Namuna: https://images.unsplash.com/photo-1575936123452-b67c3203c357</div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="imageName"><i class="fas fa-font"></i> Rasm nomi:</label>
+                        <input type="text" id="imageName" placeholder="Masalan: Tabiat manzarasi" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="imagePrice"><i class="fas fa-tag"></i> Narxi (so'm):</label>
+                        <input type="number" id="imagePrice" placeholder="Masalan: 250000" required min="0">
+                    </div>
+                    
+                    <button id="addButton" class="add-button">
+                        <i class="fas fa-plus"></i> Rasm Qo'shish
+                    </button>
+                    
+                    <div class="form-info">
+                        <p><i class="fas fa-info-circle"></i> Rasm barcha foydalanuvchilarga ko'rinadi</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="gallery-section">
+                <h2><i class="fas fa-th-large"></i> Barcha Rasmlar</h2>
+                <div class="gallery-controls">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Rasm nomi bo'yicha qidirish...">
+                    </div>
+                    <div class="sort-options">
+                        <select id="sortSelect">
+                            <option value="newest">Yangi qo'shilganlar</option>
+                            <option value="oldest">Eski qo'shilganlar</option>
+                            <option value="priceLow">Arzon narxlar</option>
+                            <option value="priceHigh">Qimmat narxlar</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="images-container" id="imagesContainer">
+                    <!-- Rasmlar shu yerda ko'rsatiladi -->
+                    <div class="loading">
+                        <i class="fas fa-spinner fa-spin"></i> Rasmlar yuklanmoqda...
+                    </div>
+                </div>
+                
+                <div class="no-images" id="noImagesMessage" style="display: none;">
+                    <i class="fas fa-image"></i>
+                    <h3>Hozircha rasm yo'q</h3>
+                    <p>Birinchi rasmni qo'shish uchun yuqoridagi formani to'ldiring</p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>© 2023 Rasm Galereyasi. Barcha huquqlar himoyalangan.</p>
+            <p class="footer-info"><i class="fas fa-users"></i> Barcha foydalanuvchilar uchun ochiq platforma</p>
+        </footer>
     </div>
+
+    <div id="notification" class="notification">
+        <span id="notificationText"></span>
+    </div>
+
+    <script src="firebase-config.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
