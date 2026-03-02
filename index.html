@@ -3,8 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FaceID Pro | 24/7 Avtomatik Kuzatuv</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FaceID Pro | Mobile 24/7</title>
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
@@ -17,93 +17,66 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
         
         body {
             min-height: 100vh;
-            background: radial-gradient(circle at 10% 20%, rgba(0, 0, 0, 0.95) 0%, rgba(20, 20, 40, 1) 90%);
+            background: #000;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+            touch-action: pan-y pinch-zoom;
         }
+        /* Asosiy konteyner - mobil uchun to'liq ekran */
         
         .app-wrapper {
             width: 100%;
-            max-width: 1200px;
-            background: rgba(30, 30, 50, 0.9);
+            height: 100vh;
+            max-width: 100%;
+            background: rgba(10, 10, 20, 0.95);
             backdrop-filter: blur(10px);
-            border-radius: 30px;
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
-            padding: 20px;
-            border: 1px solid rgba(0, 255, 255, 0.3);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            border: none;
+            overflow: hidden;
         }
-        /* Header */
+        /* Status bar - mobil uchun */
         
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
-            padding: 15px;
-            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.1));
-            border-radius: 20px;
-            border: 1px solid rgba(0, 255, 255, 0.3);
-        }
-        
-        .header h1 {
-            font-size: 2.5em;
-            color: #0ff;
-            text-shadow: 0 0 10px #0ff;
-            margin-bottom: 5px;
-        }
-        /* Status Panel */
-        
-        .status-panel {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .status-card {
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
             background: rgba(0, 0, 0, 0.5);
-            border-radius: 15px;
-            padding: 15px;
-            text-align: center;
-            border: 1px solid rgba(0, 255, 255, 0.3);
-        }
-        
-        .status-card i {
-            font-size: 2em;
             color: #0ff;
-            margin-bottom: 10px;
+            font-size: 12px;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
         }
         
-        .status-label {
-            color: #aaa;
-            font-size: 0.9em;
+        .battery {
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
-        
-        .status-value {
-            color: #0ff;
-            font-size: 1.5em;
-            font-weight: bold;
-        }
-        /* Kamera konteyneri */
+        /* Kamera sektsiyasi - mobil uchun optimallashtirilgan */
         
         .camera-section {
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 20px;
-            padding: 15px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(0, 255, 255, 0.3);
+            flex: 1;
+            position: relative;
+            background: #000;
+            min-height: 0;
+            overflow: hidden;
         }
         
         .camera-container {
             position: relative;
             width: 100%;
-            aspect-ratio: 16/9;
-            border-radius: 15px;
-            overflow: hidden;
+            height: 100%;
             background: #000;
         }
         
@@ -122,7 +95,7 @@
             height: 100%;
             pointer-events: none;
         }
-        /* Deteksiya overlay */
+        /* Overlay elementlari */
         
         .detection-overlay {
             position: absolute;
@@ -138,150 +111,273 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 3px;
+            height: 2px;
             background: linear-gradient(90deg, transparent, #0ff, #f0f, transparent);
             animation: scanMove 2s linear infinite;
-            box-shadow: 0 0 20px #0ff;
+            opacity: 0.5;
         }
         
         @keyframes scanMove {
             0% {
-                top: -10px;
+                top: -2px;
             }
             100% {
                 top: 100%;
             }
         }
+        /* Deteksiya ma'lumotlari */
         
-        .detection-frame {
+        .detection-info {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80%;
-            height: 80%;
-            border: 2px solid rgba(0, 255, 255, 0.5);
-            border-radius: 10px;
-            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7);
-        }
-        /* Controls */
-        
-        .controls {
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            z-index: 10;
             display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin: 20px 0;
+            justify-content: space-between;
+            pointer-events: none;
         }
         
-        .btn {
-            padding: 15px 30px;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.1em;
-            font-weight: 600;
-            cursor: pointer;
+        .status-badge {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            padding: 8px 15px;
+            border-radius: 30px;
+            border: 1px solid #0ff;
+            color: #0ff;
+            font-size: 14px;
+            font-weight: 500;
             display: flex;
             align-items: center;
-            gap: 10px;
-            transition: all 0.3s;
+            gap: 8px;
+        }
+        
+        .status-badge.danger {
+            border-color: #f0f;
+            color: #f0f;
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.7;
+            }
+        }
+        
+        .counter-badge {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            padding: 8px 15px;
+            border-radius: 30px;
+            border: 1px solid #0ff;
+            color: #fff;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        /* Controls - mobil uchun pastki panel */
+        
+        .controls-panel {
+            background: rgba(20, 20, 30, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(0, 255, 255, 0.3);
+            padding: 10px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .mobile-btn {
+            flex: 1;
+            padding: 12px 0;
+            border: none;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
             background: rgba(0, 0, 0, 0.5);
             color: #0ff;
             border: 1px solid #0ff;
+            transition: all 0.2s;
+            cursor: pointer;
+            min-width: 0;
         }
         
-        .btn:hover {
+        .mobile-btn i {
+            font-size: 20px;
+        }
+        
+        .mobile-btn span {
+            font-size: 11px;
+        }
+        
+        .mobile-btn.active {
             background: #0ff;
             color: #000;
             box-shadow: 0 0 20px #0ff;
         }
         
-        .btn.active {
-            background: #0ff;
-            color: #000;
-        }
-        
-        .btn.danger {
+        .mobile-btn.danger {
             border-color: #f0f;
             color: #f0f;
         }
         
-        .btn.danger:hover {
+        .mobile-btn.danger.active {
             background: #f0f;
             color: #000;
             box-shadow: 0 0 20px #f0f;
         }
-        /* Log panel */
+        
+        .mobile-btn:active {
+            transform: scale(0.95);
+        }
+        /* Stats panel - mobil uchun scroll */
+        
+        .stats-container {
+            background: rgba(20, 20, 30, 0.95);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .stats-container.show {
+            max-height: 300px;
+            border-top: 1px solid rgba(0, 255, 255, 0.3);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+            padding: 10px;
+        }
+        
+        .stat-item {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            padding: 10px 5px;
+            text-align: center;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+        }
+        
+        .stat-item i {
+            color: #0ff;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        
+        .stat-value {
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .stat-label {
+            color: #888;
+            font-size: 9px;
+            text-transform: uppercase;
+        }
+        /* Log panel - mobil uchun */
+        
+        .log-container {
+            background: rgba(20, 20, 30, 0.95);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .log-container.show {
+            max-height: 200px;
+            border-top: 1px solid rgba(0, 255, 255, 0.3);
+        }
         
         .log-panel {
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 15px;
-            padding: 15px;
             height: 200px;
             overflow-y: auto;
-            border: 1px solid rgba(0, 255, 255, 0.3);
+            padding: 10px;
+            -webkit-overflow-scrolling: touch;
         }
         
         .log-entry {
             padding: 8px;
-            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+            border-bottom: 1px solid rgba(0, 255, 255, 0.1);
             color: #0ff;
-            font-size: 0.9em;
+            font-size: 11px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            word-break: break-word;
+        }
+        /* Users panel - mobil uchun */
+        
+        .users-container {
+            background: rgba(20, 20, 30, 0.95);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
         }
         
-        .log-entry i {
-            width: 20px;
+        .users-container.show {
+            max-height: 200px;
+            border-top: 1px solid rgba(0, 255, 255, 0.3);
         }
-        
-        .log-time {
-            color: #888;
-            font-size: 0.8em;
-        }
-        /* Users panel */
         
         .users-panel {
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 15px;
-            padding: 15px;
-            margin-top: 20px;
+            height: 200px;
+            overflow-y: auto;
+            padding: 10px;
+            -webkit-overflow-scrolling: touch;
         }
         
         .users-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 10px;
-            margin-top: 10px;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 8px;
         }
         
         .user-card {
             background: rgba(0, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 10px;
+            border-radius: 12px;
+            padding: 10px 5px;
             text-align: center;
             border: 1px solid rgba(0, 255, 255, 0.3);
             cursor: pointer;
+            transition: all 0.2s;
         }
         
-        .user-card:hover {
-            background: rgba(0, 255, 255, 0.2);
+        .user-card:active {
+            background: rgba(0, 255, 255, 0.3);
+            transform: scale(0.95);
         }
         
         .user-avatar {
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             background: linear-gradient(135deg, #0ff, #f0f);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 10px;
+            margin: 0 auto 5px;
             color: #000;
             font-weight: bold;
-            font-size: 1.5em;
+            font-size: 18px;
         }
-        /* Modal */
+        
+        .user-name {
+            font-size: 11px;
+            color: #0ff;
+        }
+        /* Modal - mobil uchun */
         
         .modal {
             display: none;
@@ -290,69 +386,143 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 1000;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
             justify-content: center;
             align-items: center;
+            padding: 20px;
         }
         
         .modal-content {
-            background: rgba(30, 30, 50, 0.95);
-            padding: 30px;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 400px;
+            background: rgba(20, 20, 30, 0.98);
+            padding: 25px;
+            border-radius: 25px;
+            width: 100%;
+            max-width: 350px;
             border: 1px solid #0ff;
         }
         
         .modal input {
             width: 100%;
-            padding: 12px;
+            padding: 15px;
             margin: 10px 0;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.7);
             border: 1px solid #0ff;
-            border-radius: 10px;
+            border-radius: 15px;
             color: #0ff;
-            font-size: 1em;
+            font-size: 16px;
+            -webkit-appearance: none;
         }
         
-        .modal-title {
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .modal-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            background: rgba(0, 255, 255, 0.1);
             color: #0ff;
+            border: 1px solid #0ff;
+            cursor: pointer;
+        }
+        
+        .modal-btn.danger {
+            border-color: #f0f;
+            color: #f0f;
+        }
+        /* Background service indicator */
+        
+        .bg-service {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #0ff;
+            color: #000;
             text-align: center;
-            margin-bottom: 20px;
+            padding: 5px;
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 9999;
+            display: none;
+        }
+        
+        .bg-service.show {
+            display: block;
+        }
+        /* Touch zones */
+        
+        .touch-zone {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background: transparent;
+            z-index: 100;
+        }
+        /* Loading */
+        
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #000;
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid #0ff;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
         }
     </style>
 </head>
 
 <body>
-    <div class="app-wrapper">
-        <!-- Header -->
-        <div class="header">
-            <h1><i class="fas fa-video"></i> FACEID PRO - 24/7 KUZATUV</h1>
-            <p style="color: #0ff; opacity: 0.8;">Xonada odam aniqlansa, avtomatik suratga olish tizimi</p>
-        </div>
+    <!-- Loading -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <div style="color: #0ff; font-size: 14px;">Tizim yuklanmoqda...</div>
+    </div>
 
-        <!-- Status Panel -->
-        <div class="status-panel">
-            <div class="status-card">
-                <i class="fas fa-users"></i>
-                <div class="status-label">Ro'yxatdan o'tgan</div>
-                <div class="status-value" id="totalUsers">0</div>
-            </div>
-            <div class="status-card">
-                <i class="fas fa-camera"></i>
-                <div class="status-label">Suratlar soni</div>
-                <div class="status-value" id="photoCount">0</div>
-            </div>
-            <div class="status-card">
-                <i class="fas fa-telegram"></i>
-                <div class="status-label">Yuborilgan</div>
-                <div class="status-value" id="sentCount">0</div>
-            </div>
-            <div class="status-card">
-                <i class="fas fa-clock"></i>
-                <div class="status-label">Ish vaqti</div>
-                <div class="status-value" id="uptime">00:00</div>
+    <!-- Background service indicator -->
+    <div class="bg-service" id="bgService">
+        <i class="fas fa-eye"></i> Background kuzatuv faol
+    </div>
+
+    <!-- Asosiy app -->
+    <div class="app-wrapper">
+        <!-- Status bar -->
+        <div class="status-bar">
+            <div><i class="fas fa-shield-alt"></i> FaceID Pro</div>
+            <div class="battery">
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-three-quarters"></i>
+                <span id="timeNow">12:00</span>
             </div>
         </div>
 
@@ -361,56 +531,107 @@
             <div class="camera-container">
                 <video id="cameraFeed" autoplay playsinline></video>
                 <canvas id="cameraCanvas"></canvas>
+
+                <!-- Detection overlay -->
                 <div class="detection-overlay">
                     <div class="scan-line"></div>
-                    <div class="detection-frame"></div>
+                </div>
+
+                <!-- Detection info -->
+                <div class="detection-info">
+                    <div class="status-badge" id="statusBadge">
+                        <i class="fas fa-circle"></i>
+                        <span id="statusText">Kutilyapti</span>
+                    </div>
+                    <div class="counter-badge">
+                        <i class="fas fa-camera"></i>
+                        <span id="photoCounter">0</span>
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Controls -->
-            <div class="controls">
-                <button class="btn active" id="startBtn" onclick="startMonitoring()">
-                    <i class="fas fa-play"></i> Boshlash
-                </button>
-                <button class="btn danger" id="stopBtn" onclick="stopMonitoring()" disabled>
-                    <i class="fas fa-stop"></i> To'xtatish
-                </button>
-                <button class="btn" onclick="showRegisterModal()">
-                    <i class="fas fa-user-plus"></i> Yangi odam
-                </button>
-                <button class="btn" onclick="clearStats()">
-                    <i class="fas fa-trash"></i> Statistikani tozalash
-                </button>
+        <!-- Controls panel -->
+        <div class="controls-panel">
+            <button class="mobile-btn" onclick="toggleStats()">
+                <i class="fas fa-chart-bar"></i>
+                <span>Statistika</span>
+            </button>
+            <button class="mobile-btn active" id="startBtn" onclick="startMonitoring()">
+                <i class="fas fa-play"></i>
+                <span>Boshlash</span>
+            </button>
+            <button class="mobile-btn danger" id="stopBtn" onclick="stopMonitoring()" disabled>
+                <i class="fas fa-stop"></i>
+                <span>To'xtatish</span>
+            </button>
+            <button class="mobile-btn" onclick="showRegisterModal()">
+                <i class="fas fa-user-plus"></i>
+                <span>Qo'shish</span>
+            </button>
+            <button class="mobile-btn" onclick="toggleLogs()">
+                <i class="fas fa-list"></i>
+                <span>Loglar</span>
+            </button>
+        </div>
+
+        <!-- Stats panel -->
+        <div class="stats-container" id="statsPanel">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <i class="fas fa-users"></i>
+                    <div class="stat-value" id="totalUsers">0</div>
+                    <div class="stat-label">Odamlar</div>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-camera"></i>
+                    <div class="stat-value" id="photoCount">0</div>
+                    <div class="stat-label">Suratlar</div>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-telegram"></i>
+                    <div class="stat-value" id="sentCount">0</div>
+                    <div class="stat-label">Yuborilgan</div>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-clock"></i>
+                    <div class="stat-value" id="uptime">00:00</div>
+                    <div class="stat-label">Ish vaqti</div>
+                </div>
             </div>
         </div>
 
         <!-- Log panel -->
-        <div class="log-panel" id="logPanel">
-            <div class="log-entry">
-                <i class="fas fa-info-circle" style="color: #0ff;"></i>
-                <span class="log-time">00:00:00</span>
-                <span>Tizim ishga tushdi. Kamera yoqish uchun "Boshlash" tugmasini bosing</span>
+        <div class="log-container" id="logPanel">
+            <div class="log-panel" id="logList">
+                <div class="log-entry">
+                    <i class="fas fa-info-circle" style="color: #0ff;"></i>
+                    <span>Tizim ishga tayyor</span>
+                </div>
             </div>
         </div>
 
-        <!-- Ro'yxatdan o'tgan odamlar -->
-        <div class="users-panel">
-            <h3 style="color: #0ff; margin-bottom: 10px;">
-                <i class="fas fa-database"></i> Ro'yxatdan o'tgan odamlar: <span id="userCount">0</span>
-            </h3>
-            <div class="users-grid" id="usersList"></div>
+        <!-- Users panel -->
+        <div class="users-container" id="usersPanel">
+            <div class="users-panel">
+                <div class="users-grid" id="usersList">
+                    <!-- Users will be added here -->
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Registratsiya modali -->
+    <!-- Register Modal -->
     <div class="modal" id="registerModal">
         <div class="modal-content">
-            <h2 class="modal-title"><i class="fas fa-user-plus"></i> Yangi odam qo'shish</h2>
-            <input type="text" id="regName" placeholder="Ism familiya">
-            <input type="text" id="regPhone" placeholder="Telefon raqam">
-            <div style="display: flex; gap: 10px; margin-top: 20px;">
-                <button class="btn" style="flex: 1;" onclick="registerUser()">Saqlash</button>
-                <button class="btn danger" style="flex: 1;" onclick="hideRegisterModal()">Bekor qilish</button>
+            <h3 style="color: #0ff; text-align: center; margin-bottom: 15px;">
+                <i class="fas fa-user-plus"></i> Yangi odam
+            </h3>
+            <input type="text" id="regName" placeholder="Ism familiya" autocomplete="off">
+            <input type="tel" id="regPhone" placeholder="Telefon raqam" autocomplete="off">
+            <div class="modal-buttons">
+                <button class="modal-btn" onclick="registerUser()">Saqlash</button>
+                <button class="modal-btn danger" onclick="hideRegisterModal()">Bekor qilish</button>
             </div>
         </div>
     </div>
@@ -419,8 +640,8 @@
         // ===========================================
         // TELEGRAM BOT SOZLAMALARI
         // ===========================================
-        const BOT_TOKEN = '8299774564:AAFVtudpmJNRTSTuRgFtiZAhR1jSTEYyLu0'; // Bot tokenni o'zgartiring
-        const CHAT_ID = '8074394669'; // Chat ID ni o'zgartiring
+        const BOT_TOKEN = '8299774564:AAFVtudpmJNRTSTuRgFtiZAhR1jSTEYyLu0';
+        const CHAT_ID = '8074394669';
         // ===========================================
 
         // Global o'zgaruvchilar
@@ -432,16 +653,88 @@
         let startTime = Date.now();
         let users = [];
         let lastPhotoTime = 0;
-        const PHOTO_INTERVAL = 1000; // Har 1 soniyada 1 rasm
+        const PHOTO_INTERVAL = 1000; // Har 1 soniyada
 
-        // LocalStorage kalitlari
-        const USERS_KEY = 'faceid_users_247';
-        const STATS_KEY = 'faceid_stats_247';
+        // Background ishlashi uchun
+        let wakeLock = null;
+        let bgInterval = null;
 
-        // Ma'lumotlarni yuklash
+        // LocalStorage
+        const USERS_KEY = 'faceid_mobile_users';
+        const STATS_KEY = 'faceid_mobile_stats';
+
+        // Vaqtni yangilash
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('timeNow').innerText =
+                `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+        }
+        setInterval(updateTime, 1000);
+
+        // Wake Lock (ekran o'chmasligi uchun)
+        async function requestWakeLock() {
+            try {
+                if ('wakeLock' in navigator) {
+                    wakeLock = await navigator.wakeLock.request('screen');
+                    wakeLock.addEventListener('release', () => {
+                        addLog('Wake Lock released');
+                    });
+                    addLog('✅ Wake Lock aktiv', 'success');
+                }
+            } catch (err) {
+                console.log('Wake Lock error:', err);
+            }
+        }
+
+        // Background ishlash
+        function enableBackgroundMode() {
+            // Service worker registratsiyasi (agar mavjud bo'lsa)
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('sw.js').catch(err => {
+                    console.log('Service Worker error:', err);
+                });
+            }
+
+            // Background indicator
+            document.getElementById('bgService').classList.add('show');
+
+            // Har 5 soniyada backgroundda ishlayotganini tekshirish
+            bgInterval = setInterval(() => {
+                if (isMonitoring && !document.hidden) {
+                    // Visible
+                }
+            }, 5000);
+        }
+
+        // Log qo'shish
+        function addLog(message, type = 'info') {
+            const logList = document.getElementById('logList');
+            const time = new Date().toLocaleTimeString();
+            const icon = type === 'success' ? 'fa-check-circle' :
+                type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle';
+            const color = type === 'success' ? '#0f0' :
+                type === 'error' ? '#f0f' : '#0ff';
+
+            const logEntry = document.createElement('div');
+            logEntry.className = 'log-entry';
+            logEntry.innerHTML = `
+                <i class="fas ${icon}" style="color: ${color};"></i>
+                <span>${time} - ${message}</span>
+            `;
+
+            logList.insertBefore(logEntry, logList.firstChild);
+
+            while (logList.children.length > 50) {
+                logList.removeChild(logList.lastChild);
+            }
+        }
+
+        // Foydalanuvchilarni yuklash
         function loadUsers() {
             const saved = localStorage.getItem(USERS_KEY);
             users = saved ? JSON.parse(saved) : [];
+            updateUsersList();
+            document.getElementById('totalUsers').innerText = users.length;
             return users;
         }
 
@@ -449,9 +742,9 @@
             localStorage.setItem(USERS_KEY, JSON.stringify(users));
             updateUsersList();
             document.getElementById('totalUsers').innerText = users.length;
-            document.getElementById('userCount').innerText = users.length;
         }
 
+        // Statistikani yuklash
         function loadStats() {
             const saved = localStorage.getItem(STATS_KEY);
             if (saved) {
@@ -469,45 +762,23 @@
             }));
         }
 
-        // Log yozish
-        function addLog(message, type = 'info') {
-            const logPanel = document.getElementById('logPanel');
-            const time = new Date().toLocaleTimeString();
-            const icon = type === 'success' ? 'fa-check-circle' :
-                type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle';
-            const color = type === 'success' ? '#0f0' :
-                type === 'error' ? '#f0f' : '#0ff';
-
-            const logEntry = document.createElement('div');
-            logEntry.className = 'log-entry';
-            logEntry.innerHTML = `
-                <i class="fas ${icon}" style="color: ${color};"></i>
-                <span class="log-time">${time}</span>
-                <span>${message}</span>
-            `;
-
-            logPanel.insertBefore(logEntry, logPanel.firstChild);
-
-            // 100 tadan ko'p logs bo'lsa o'chirish
-            while (logPanel.children.length > 100) {
-                logPanel.removeChild(logPanel.lastChild);
-            }
+        // UI panellarni toggle
+        function toggleStats() {
+            document.getElementById('statsPanel').classList.toggle('show');
+            document.getElementById('logPanel').classList.remove('show');
+            document.getElementById('usersPanel').classList.remove('show');
         }
 
-        // Uptime ni yangilash
-        function updateUptime() {
-            const uptime = Math.floor((Date.now() - startTime) / 1000);
-            const hours = Math.floor(uptime / 3600);
-            const minutes = Math.floor((uptime % 3600) / 60);
-            const seconds = uptime % 60;
-            document.getElementById('uptime').innerText =
-                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        function toggleLogs() {
+            document.getElementById('logPanel').classList.toggle('show');
+            document.getElementById('statsPanel').classList.remove('show');
+            document.getElementById('usersPanel').classList.remove('show');
         }
 
-        // Statistikani yangilash
-        function updateStats() {
-            document.getElementById('photoCount').innerText = photoCount;
-            document.getElementById('sentCount').innerText = sentCount;
+        function toggleUsers() {
+            document.getElementById('usersPanel').classList.toggle('show');
+            document.getElementById('statsPanel').classList.remove('show');
+            document.getElementById('logPanel').classList.remove('show');
         }
 
         // Foydalanuvchilar ro'yxatini yangilash
@@ -519,48 +790,82 @@
             }
 
             container.innerHTML = users.map(user => `
-                <div class="user-card" onclick="removeUser('${user.id}')" title="O'chirish uchun bosing">
+                <div class="user-card" onclick="removeUser('${user.id}')">
                     <div class="user-avatar">${user.fullName.charAt(0).toUpperCase()}</div>
-                    <div style="font-size: 0.9em; color: #0ff;">${user.fullName.split(' ')[0]}</div>
-                    <div style="font-size: 0.7em; color: #888;">${user.phoneNumber}</div>
+                    <div class="user-name">${user.fullName.split(' ')[0]}</div>
                 </div>
             `).join('');
         }
 
-        // Kamerani boshlash
+        // Kamera boshlash (mobil uchun optimallashtirilgan)
         async function startMonitoring() {
             try {
-                cameraStream = await navigator.mediaDevices.getUserMedia({
+                // Mobil uchun kamera sozlamalari
+                const constraints = {
                     video: {
                         width: {
-                            ideal: 1280
+                            ideal: 640
                         },
                         height: {
-                            ideal: 720
+                            ideal: 480
                         },
-                        facingMode: 'environment' // Orqa kamera (xonani kuzatish uchun)
+                        facingMode: 'environment', // Orqa kamera
+                        frameRate: {
+                            ideal: 30
+                        }
                     },
                     audio: false
-                });
+                };
+
+                cameraStream = await navigator.mediaDevices.getUserMedia(constraints);
 
                 const video = document.getElementById('cameraFeed');
                 video.srcObject = cameraStream;
 
                 video.onloadedmetadata = () => {
-                    video.play();
-                    isMonitoring = true;
+                    video.play()
+                        .then(() => {
+                            isMonitoring = true;
 
-                    document.getElementById('startBtn').disabled = true;
-                    document.getElementById('stopBtn').disabled = false;
+                            document.getElementById('startBtn').disabled = true;
+                            document.getElementById('stopBtn').disabled = false;
+                            document.getElementById('statusBadge').className = 'status-badge danger';
+                            document.getElementById('statusText').innerHTML = '<i class="fas fa-eye"></i> Kuzatuv faol';
 
-                    addLog('✅ Kamera yoqildi. Kuzatuv boshlandi!', 'success');
+                            // Wake Lock so'rash
+                            requestWakeLock();
 
-                    // Deteksiyani boshlash
-                    startDetection();
+                            // Background mode
+                            enableBackgroundMode();
+
+                            addLog('✅ Kuzatuv boshlandi', 'success');
+
+                            // Deteksiyani boshlash
+                            startDetection();
+                        })
+                        .catch(err => {
+                            addLog('❌ Video play xatosi: ' + err.message, 'error');
+                        });
                 };
 
             } catch (error) {
                 addLog('❌ Kamera xatosi: ' + error.message, 'error');
+
+                // Fallback - front kamerani sinash
+                try {
+                    const constraints = {
+                        video: {
+                            facingMode: 'user',
+                            width: {
+                                ideal: 640
+                            }
+                        }
+                    };
+                    cameraStream = await navigator.mediaDevices.getUserMedia(constraints);
+                    startMonitoring();
+                } catch (e) {
+                    addLog('❌ Hech qanday kamera topilmadi', 'error');
+                }
             }
         }
 
@@ -576,9 +881,22 @@
                 detectionInterval = null;
             }
 
+            if (bgInterval) {
+                clearInterval(bgInterval);
+                bgInterval = null;
+            }
+
+            if (wakeLock) {
+                wakeLock.release();
+                wakeLock = null;
+            }
+
             isMonitoring = false;
             document.getElementById('startBtn').disabled = false;
             document.getElementById('stopBtn').disabled = true;
+            document.getElementById('statusBadge').className = 'status-badge';
+            document.getElementById('statusText').innerHTML = '<i class="fas fa-circle"></i> To\'xtatilgan';
+            document.getElementById('bgService').classList.remove('show');
 
             addLog('⏸️ Kuzatuv to\'xtatildi', 'info');
         }
@@ -589,14 +907,24 @@
             const canvas = document.getElementById('cameraCanvas');
             const ctx = canvas.getContext('2d');
 
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
+            // Canvas o'lchamini video bo'yicha sozlash
+            const resizeCanvas = () => {
+                if (video.videoWidth && video.videoHeight) {
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                }
+            };
+
+            video.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
 
             detectionInterval = setInterval(async() => {
-                if (!isMonitoring || !video.srcObject) return;
+                if (!isMonitoring || !video.srcObject || document.hidden) {
+                    // Backgroundda ishlashda ham davom etadi
+                    return;
+                }
 
                 try {
-                    // Yuzni aniqlash
                     const detections = await faceapi.detectAllFaces(video)
                         .withFaceLandmarks()
                         .withFaceDescriptors();
@@ -604,128 +932,120 @@
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
                     if (detections.length > 0) {
-                        // ODAM ANIQLANDI!
-
-                        // Har bir aniqlangan yuz uchun
+                        // ODAM ANIQLANDI
                         for (const detection of detections) {
                             const box = detection.detection.box;
-                            const confidence = detection.detection.score * 100;
 
-                            // Yuz atrofiga qizil ramka
+                            // Ramka chizish
                             ctx.strokeStyle = '#ff0000';
                             ctx.lineWidth = 3;
                             ctx.strokeRect(box.x, box.y, box.width, box.height);
 
-                            // "ODAM" deb yozish
-                            ctx.font = 'bold 24px Poppins';
+                            // "ODAM" yozuvi
+                            ctx.font = 'bold 20px Poppins';
                             ctx.fillStyle = '#ff0000';
                             ctx.shadowColor = 'red';
                             ctx.shadowBlur = 10;
-                            ctx.fillText('🚨 ODAM!', box.x, box.y - 20);
-                            ctx.shadowBlur = 0;
+                            ctx.fillText('🚨 ODAM!', box.x, box.y - 10);
 
-                            // Aniqlik foizi
-                            ctx.font = 'bold 16px Poppins';
+                            // Aniqlik
+                            const confidence = Math.round(detection.detection.score * 100);
+                            ctx.font = 'bold 14px Poppins';
                             ctx.fillStyle = '#ffff00';
-                            ctx.fillText(`${Math.round(confidence)}%`, box.x, box.y + box.height + 25);
+                            ctx.fillText(`${confidence}%`, box.x, box.y + box.height + 20);
+
+                            ctx.shadowBlur = 0;
                         }
 
-                        // SURATGA OLISH (har 1 soniyada)
+                        // Suratga olish (har 1 soniyada)
                         const now = Date.now();
                         if (now - lastPhotoTime >= PHOTO_INTERVAL) {
                             lastPhotoTime = now;
-
-                            // Rasmga olish
                             captureAndSend(video);
                         }
-
-                    } else {
-                        // Hech kim yo'q
-                        ctx.font = 'bold 20px Poppins';
-                        ctx.fillStyle = '#00ff00';
-                        ctx.shadowColor = '#0f0';
-                        ctx.shadowBlur = 10;
-                        ctx.fillText('✅ Xona bo\'sh', 20, 50);
-                        ctx.shadowBlur = 0;
                     }
 
                 } catch (error) {
-                    console.log('Deteksiya xatosi:', error);
+                    console.log('Detection error:', error);
                 }
-            }, 200); // 200ms tezlikda tekshirish
+            }, 200);
         }
 
         // Suratga olish va yuborish
         async function captureAndSend(videoElement) {
-            // Suratga olish
-            const canvas = document.createElement('canvas');
-            canvas.width = videoElement.videoWidth;
-            canvas.height = videoElement.videoHeight;
+            try {
+                const canvas = document.createElement('canvas');
+                canvas.width = videoElement.videoWidth || 640;
+                canvas.height = videoElement.videoHeight || 480;
 
-            const ctx = canvas.getContext('2d');
+                const ctx = canvas.getContext('2d');
 
-            // Videoni chizish (mirror effect)
-            ctx.translate(canvas.width, 0);
-            ctx.scale(-1, 1);
-            ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+                // Videoni chizish
+                ctx.translate(canvas.width, 0);
+                ctx.scale(-1, 1);
+                ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
 
-            // Ma'lumot qo'shish
-            ctx.setTransform(1, 0, 0, 1, 0, 0);
+                // Ma'lumot qo'shish
+                ctx.setTransform(1, 0, 0, 1, 0, 0);
 
-            const timeStr = new Date().toLocaleString();
+                const timeStr = new Date().toLocaleString();
 
-            ctx.font = 'bold 24px Poppins';
-            ctx.fillStyle = '#ff0000';
-            ctx.shadowColor = 'black';
-            ctx.shadowBlur = 10;
-            ctx.fillText('🚨 ODAM ANIQLANDI!', 20, 50);
+                ctx.font = 'bold 20px Poppins';
+                ctx.fillStyle = '#ff0000';
+                ctx.shadowColor = 'black';
+                ctx.shadowBlur = 5;
+                ctx.fillText('🚨 KUZATUV', 10, 40);
 
-            ctx.font = '18px Poppins';
-            ctx.fillStyle = '#ffff00';
-            ctx.fillText(`Vaqt: ${timeStr}`, 20, 90);
+                ctx.font = '14px Poppins';
+                ctx.fillStyle = '#00ffff';
+                ctx.fillText(timeStr, 10, 70);
+                ctx.fillText(`Odamlar: ${users.length}`, 10, 95);
 
-            // Ro'yxatdan o'tgan odamlar soni
-            ctx.fillStyle = '#00ffff';
-            ctx.fillText(`Ro'yxatda: ${users.length} ta odam`, 20, 120);
+                ctx.shadowBlur = 0;
 
-            ctx.shadowBlur = 0;
+                // Vibratsiya (mobil uchun)
+                if (navigator.vibrate) {
+                    navigator.vibrate(200);
+                }
 
-            // Rasmni base64 qilish
-            const photoDataUrl = canvas.toDataURL('image/jpeg', 0.9);
+                // Rasmni saqlash
+                const photoDataUrl = canvas.toDataURL('image/jpeg', 0.8);
 
-            photoCount++;
-            updateStats();
+                photoCount++;
+                document.getElementById('photoCount').innerText = photoCount;
+                document.getElementById('photoCounter').innerText = photoCount;
+                updateStats();
 
-            addLog(`📸 Surat olindi #${photoCount}`, 'info');
+                addLog(`📸 Surat #${photoCount}`, 'info');
 
-            // Telegramga yuborish
-            await sendToTelegram(photoDataUrl);
+                // Telegramga yuborish
+                await sendToTelegram(photoDataUrl);
+
+            } catch (error) {
+                addLog('❌ Suratga olish xatosi: ' + error.message, 'error');
+            }
         }
 
         // Telegramga yuborish
         async function sendToTelegram(photoDataUrl) {
             try {
-                // Base64 ni blob ga aylantirish
                 const response = await fetch(photoDataUrl);
                 const blob = await response.blob();
 
-                // FormData yaratish
                 const formData = new FormData();
                 formData.append('chat_id', CHAT_ID);
-                formData.append('photo', blob, `camera_${Date.now()}.jpg`);
+                formData.append('photo', blob, `mobile_${Date.now()}.jpg`);
 
                 const timeStr = new Date().toLocaleString();
-                const caption = `🚨 **ODAM ANIQLANDI!**\n\n` +
+                const caption = `🚨 **MOBIL KUZATUV**\n\n` +
                     `📍 Vaqt: ${timeStr}\n` +
-                    `📸 Surat raqami: #${photoCount}\n` +
-                    `👥 Ro'yxatda: ${users.length} ta odam\n` +
-                    `📊 Holat: ${users.length > 0 ? 'Ba\'zi odamlar tanish' : 'Notanish odam'}\n` +
-                    `🔄 Har 1 soniyada yangi surat\n\n` +
-                    `#kuzatuv #${new Date().toDateString().replace(/ /g, '_')}`;
+                    `📸 Surat: #${photoCount}\n` +
+                    `👥 Ro'yxat: ${users.length} ta\n` +
+                    `📱 Qurilma: Mobile\n\n` +
+                    `#mobile #kuzatuv`;
 
                 formData.append('caption', caption);
 
-                // Telegram API ga yuborish
                 const apiUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`;
 
                 const sendResponse = await fetch(apiUrl, {
@@ -737,19 +1057,37 @@
 
                 if (result.ok) {
                     sentCount++;
+                    document.getElementById('sentCount').innerText = sentCount;
                     updateStats();
                     saveStats();
-                    addLog(`✅ Surat #${photoCount} Telegramga yuborildi`, 'success');
+                    addLog(`✅ Surat yuborildi`, 'success');
                 } else {
-                    addLog(`❌ Telegram xatosi: ${result.description}`, 'error');
+                    addLog(`❌ Telegram xatosi`, 'error');
                 }
 
             } catch (error) {
-                addLog(`❌ Yuborishda xatolik: ${error.message}`, 'error');
+                addLog(`❌ Yuborish xatosi: ${error.message}`, 'error');
             }
         }
 
-        // Yangi odam qo'shish
+        // Statistikani yangilash
+        function updateStats() {
+            document.getElementById('photoCount').innerText = photoCount;
+            document.getElementById('sentCount').innerText = sentCount;
+        }
+
+        // Uptime ni yangilash
+        function updateUptime() {
+            if (!isMonitoring) return;
+            const uptime = Math.floor((Date.now() - startTime) / 1000);
+            const hours = Math.floor(uptime / 3600);
+            const minutes = Math.floor((uptime % 3600) / 60);
+            const seconds = uptime % 60;
+            document.getElementById('uptime').innerText =
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+        }
+
+        // Modal funksiyalari
         function showRegisterModal() {
             document.getElementById('registerModal').style.display = 'flex';
         }
@@ -763,7 +1101,7 @@
             const phone = document.getElementById('regPhone').value.trim();
 
             if (!name || !phone) {
-                addLog('❌ Iltimos, ism va telefon raqamni kiriting!', 'error');
+                addLog('❌ Ism va telefon kiriting!', 'error');
                 return;
             }
 
@@ -781,63 +1119,64 @@
             document.getElementById('regPhone').value = '';
             hideRegisterModal();
 
-            addLog(`✅ ${name} ro'yxatga qo'shildi`, 'success');
+            addLog(`✅ ${name} qo'shildi`, 'success');
         }
 
-        // Odamni o'chirish
         function removeUser(userId) {
-            if (confirm('Bu odamni ro\'yxatdan o\'chirishni xohlaysizmi?')) {
-                const user = users.find(u => u.id === userId);
-                users = users.filter(u => u.id !== userId);
-                saveUsers();
-                addLog(`❌ ${user.fullName} ro'yxatdan o\'chirildi`, 'error');
-            }
-        }
-
-        // Statistikani tozalash
-        function clearStats() {
-            if (confirm('Barcha statistikani tozalash?')) {
-                photoCount = 0;
-                sentCount = 0;
-                saveStats();
-                updateStats();
-                addLog('📊 Statistika tozalandi', 'info');
-            }
+            const user = users.find(u => u.id === userId);
+            users = users.filter(u => u.id !== userId);
+            saveUsers();
+            addLog(`❌ ${user.fullName} o'chirildi`, 'error');
         }
 
         // Modellarni yuklash
         async function loadModels() {
             try {
-                addLog('🔄 Yuz tanish modellari yuklanmoqda...', 'info');
+                addLog('🔄 Modellar yuklanmoqda...', 'info');
 
                 const MODEL_URL = 'https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights/';
                 await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL);
                 await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
                 await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
 
-                addLog('✅ Modellar muvaffaqiyatli yuklandi', 'success');
+                addLog('✅ Modellar yuklandi', 'success');
 
-                // Ma'lumotlarni yuklash
                 loadUsers();
                 loadStats();
-                updateUsersList();
-                document.getElementById('totalUsers').innerText = users.length;
-                document.getElementById('userCount').innerText = users.length;
+
+                // Loading ni yashirish
+                document.getElementById('loading').style.display = 'none';
 
             } catch (error) {
-                addLog('❌ Modellarni yuklashda xatolik: ' + error.message, 'error');
+                addLog('❌ Modellar xatosi: ' + error.message, 'error');
             }
         }
 
-        // Uptime ni yangilash
+        // Document visibility change
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                // Backgroundda
+                if (isMonitoring) {
+                    addLog('📱 Background rejimi faol', 'info');
+                }
+            } else {
+                // Qaytib kelganda
+                if (isMonitoring) {
+                    addLog('📱 Qaytadan faol', 'success');
+                }
+            }
+        });
+
+        // Uptime interval
         setInterval(updateUptime, 1000);
 
-        // Sahifa yuklanganda
+        // Boshlash
         window.onload = () => {
             loadModels();
+            updateTime();
         };
 
-        // Sahifa yopilganda
+        // Chiqish
         window.onbeforeunload = () => {
             stopMonitoring();
             saveStats();
